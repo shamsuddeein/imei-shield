@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check IMEI - NoStolen</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+            padding: 0.5rem;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        /* Main Content */
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+            padding: 2rem 0;
+            min-height: calc(100vh - 200px);
+        }
+
+        .content-section {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .page-header p {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            opacity: 0.9;
+        }
+
+        /* IMEI Checker Card */
+        .imei-checker {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .imei-checker h2 {
+            color: #333;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        .imei-input-group {
+            margin-bottom: 2rem;
+        }
+
+        .imei-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 1.5rem;
+            border: 3px solid #e1e5e9;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            text-align: center;
+            transition: all 0.3s;
+            background: #f8f9fa;
+            letter-spacing: 1px;
+        }
+
+        .imei-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 5px rgba(102, 126, 234, 0.1);
+        }
+
+        .check-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1.5rem 3rem;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+            min-width: 200px;
+        }
+
+        .check-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .check-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Result Cards */
+        .result-card {
+            margin-top: 2rem;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            display: none;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-safe {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+        }
+
+        .result-stolen {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+        }
+
+        .result-suspicious {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            color: white;
+        }
+
+        .result-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .result-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .result-message {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .police-info {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+
+        .police-info h4 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .police-contact {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* AI Chatbot */
+        .chatbot-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+            position: sticky;
+            top: 2rem;
+        }
+
+        .chatbot-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .message {
+            max-width: 85%;
+            padding: 0.8rem 1rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .message.bot {
+            background: #f1f3f4;
+            color: #333;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+
+        .message.user {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+
+        .chatbot-input-container {
+            padding: 1rem;
+            border-top: 1px solid #e1e5e9;
+        }
+
+        .chatbot-input-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chatbot-input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid #e1e5e9;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .chatbot-send {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.8rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .loading-spinner {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(102, 126, 234, 0.3);
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .nav-links {
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            .main-container {
+                grid-template-columns: 1fr;
+                padding: 1rem 0;
+            }
+
+            .chatbot-container {
+                height: 400px;
+                order: -1;
+            }
+
+            .imei-checker {
+                padding: 2rem;
+            }
+
+            .imei-input {
+                font-size: 1rem;
+                padding: 1rem;
+            }
+
+            .check-btn {
+                padding: 1rem 2rem;
+                font-size: 1rem;
+            }
+
+            .police-contact {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 0.5rem;
+            }
+
+            .imei-checker {
+                padding: 1.5rem;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <a href="index.html" class="logo">NoStolen</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="report-stolen.html">Report</a></li>
+                <li><a href="check-imei.html">Check IMEI</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Check IMEI</h1>
+            <p>Verify if a device is safe to buy with our AI-powered IMEI checker</p>
+        </div>
+
+        <div class="main-container">
+            <div class="content-section">
+                <div class="imei-checker">
+                    <h2>Enter IMEI Number</h2>
+                    <div class="imei-input-group">
+                        <input 
+                            type="text" 
+                            id="imei-input" 
+                            class="imei-input" 
+                            placeholder="Enter 15-digit IMEI number"
+                            maxlength="15"
+                        >
+                    </div>
+                    <button id="check-btn" class="check-btn" onclick="checkIMEI()">
+                        Check Now
+                    </button>
+
+                    <div class="loading-spinner" id="loading">
+                        <div class="spinner"></div>
+                        <span>AI is analyzing IMEI...</span>
+                    </div>
+
+                    <!-- Safe Result -->
+                    <div id="result-safe" class="result-card result-safe">
+                        <div class="result-icon">✅</div>
+                        <div class="result-title">Safe to Buy</div>
+                        <div class="result-message">AI verified - This device is not reported as stolen</div>
+                    </div>
+
+                    <!-- Stolen Result -->
+                    <div id="result-stolen" class="result-card result-stolen">
+                        <div class="result-icon">⚠️</div>
+                        <div class="result-title">Reported Stolen</div>
+                        <div class="result-message">This device has been reported as stolen. Do not purchase!</div>
+                        <div class="police-info">
+                            <h4>Contact Nearest Police Station</h4>
+                            <div class="police-contact">
+                                <span>📞 Lagos Police: +234-1-199</span>
+                            </div>
+                            <div class="police-contact">
+                                <span>📍 Victoria Island Police Station</span>
+                            </div>
+                            <div class="police-contact">
+                                <span>📧 report@lagospolice.gov.ng</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Suspicious Result -->
+                    <div id="result-suspicious" class="result-card result-suspicious">
+                        <div class="result-icon">🤔</div>
+                        <div class="result-title">AI Warning</div>
+                        <div class="result-message">This IMEI looks similar to a reported stolen phone. Proceed with caution and verify with seller.</div>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="chatbot-container">
+                <div class="chatbot-header">
+                    <h3>🤖 IMEI Assistant</h3>
+                    <div>Ask me about IMEI checking</div>
+                </div>
+                
+                <div class="chatbot-messages" id="chatbot-messages">
+                    <div class="message bot">
+                        Hi! I can help you with IMEI-related questions. Ask me anything about finding your IMEI, understanding results, or device security.
+                    </div>
+                </div>
+                
+                <div class="chatbot-input-container">
+                    <div class="chatbot-input-group">
+                        <input type="text" class="chatbot-input" id="chatbot-input" placeholder="How do I find my IMEI?">
+                        <button class="chatbot-send" onclick="sendChatMessage()">Send</button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <script>
+        // IMEI validation function
+        function validateIMEI(imei) {
+            // Remove any spaces or dashes
+            imei = imei.replace(/[\s-]/g, '');
+            
+            // Check if it's 15 digits
+            if (!/^\d{15}$/.test(imei)) {
+                return false;
+            }
+            
+            // Luhn algorithm check
+            let sum = 0;
+            for (let i = 0; i < 14; i++) {
+                let digit = parseInt(imei[i]);
+                if (i % 2 === 1) {
+                    digit *= 2;
+                    if (digit > 9) {
+                        digit = Math.floor(digit / 10) + (digit % 10);
+                    }
+                }
+                sum += digit;
+            }
+            
+            const checkDigit = (10 - (sum % 10)) % 10;
+            return checkDigit === parseInt(imei[14]);
+        }
+
+        // IMEI checking function
+        function checkIMEI() {
+            const imeiInput = document.getElementById('imei-input');
+            const imei = imeiInput.value.trim();
+            const checkBtn = document.getElementById('check-btn');
+            const loading = document.getElementById('loading');
+            
+            // Hide all result cards
+            document.getElementById('result-safe').style.display = 'none';
+            document.getElementById('result-stolen').style.display = 'none';
+            document.getElementById('result-suspicious').style.display = 'none';
+            
+            if (!imei) {
+                alert('Please enter an IMEI number');
+                return;
+            }
+            
+            if (!validateIMEI(imei)) {
+                alert('Please enter a valid 15-digit IMEI number');
+                return;
+            }
+            
+            // Show loading
+            checkBtn.disabled = true;
+            loading.style.display = 'flex';
+            
+            // Simulate AI processing
+            setTimeout(() => {
+                loading.style.display = 'none';
+                checkBtn.disabled = false;
+                
+                // Simulate different results based on IMEI
+                const lastDigit = parseInt(imei.slice(-1));
+                
+                if (lastDigit <= 6) {
+                    // 70% chance - Safe
+                    document.getElementById('result-safe').style.display = 'block';
+                } else if (lastDigit <= 8) {
+                    // 20% chance - Suspicious
+                    document.getElementById('result-suspicious').style.display = 'block';
+                } else {
+                    // 10% chance - Stolen
+                    document.getElementById('result-stolen').style.display = 'block';
+                }
+                
+                // Scroll to result
+                document.querySelector('.result-card[style*="block"]').scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'center' 
+                });
+                
+            }, 3000);
+        }
+
+        // Chatbot functionality
+        const chatbotResponses = {
+            'how do i find my imei': 'You can find your IMEI number in several ways:\n\n• Dial *#06# on your phone\n• Go to Settings > About Phone > IMEI\n• Check the original box or receipt\n• Look under the battery (older phones)\n• Check the SIM tray on newer phones\n\nThe IMEI is always 15 digits long.',
+            
+            'what is imei': 'IMEI stands for International Mobile Equipment Identity. It\'s a unique 15-digit number that identifies your mobile device, like a fingerprint for your phone. Every phone has a different IMEI number that cannot be easily changed.',
+            
+            'why check imei': 'Checking IMEI helps you:\n\n• Verify the device isn\'t stolen\n• Avoid buying blacklisted phones\n• Ensure the device will work on networks\n• Protect yourself from fraud\n• Help recover stolen devices\n\nAlways check before buying a used phone!',
+            
+            'what if stolen': 'If our system shows a device is stolen:\n\n• DO NOT buy the device\n• Report it to local police\n• Contact the seller (they may not know)\n• Use our contact info to report the seller\n• Help us fight phone theft!\n\nNever purchase a device marked as stolen.',
+            
+            'suspicious result': 'A suspicious result means:\n\n• The IMEI is similar to reported stolen devices\n• Our AI detected potential patterns\n• Extra caution is recommended\n• Ask seller for proof of purchase\n• Consider getting a different device\n\nWhen in doubt, don\'t buy!'
+        };
+
+        function addChatMessage(message, isUser = false) {
+            const messagesContainer = document.getElementById('chatbot-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+            messageDiv.textContent = message;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function getChatbotResponse(userMessage) {
+            const message = userMessage.toLowerCase().trim();
+            
+            // Find matching response
+            for (const [key, response] of Object.entries(chatbotResponses)) {
+                if (message.includes(key.replace(/[?]/g, '')) || key.includes(message.replace(/[?]/g, ''))) {
+                    return response;
+                }
+            }
+            
+            // Check for greetings
+            if (message.includes('hello') || message.includes('hi') || message.includes('hey')) {
+                return 'Hello! I\'m here to help with IMEI checking. I can explain how to find your IMEI, what the results mean, and why checking is important. What would you like to know?';
+            }
+            
+            // Default response
+            return 'I can help you with:\n\n• How to find your IMEI number\n• What IMEI numbers are\n• Why you should check IMEI\n• What to do if a device is stolen\n• Understanding suspicious results\n\nWhat would you like to know?';
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatbot-input');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message
+            addChatMessage(message, true);
+            input.value = '';
+            
+            // Simulate typing delay
+            setTimeout(() => {
+                const response = getChatbotResponse(message);
+                addChatMessage(response);
+            }, 800);
+        }
+
+        // Enter key support
+        document.getElementById('chatbot-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendChatMessage();
+            }
+        });
+
+        // IMEI input formatting
+        document.getElementById('imei-input').addEventListener('input', function(e) {
+            // Only allow numbers
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        // Enter key for IMEI check
+        document.getElementById('imei-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkIMEI();
+            }
+        });
+    </script>
+</body>
+</html>

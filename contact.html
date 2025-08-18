@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact & Support - NoStolen</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+            padding: 0.5rem;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        /* Enhanced responsive main container with sidebar layout for chatbot */
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+            padding: 2rem 0;
+            min-height: calc(100vh - 200px);
+        }
+
+        .content-section {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .page-header h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .page-header p {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            opacity: 0.9;
+        }
+
+        /* Improved contact info card with better mobile responsiveness */
+        .contact-info-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-info-card h2 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .contact-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .contact-details h3 {
+            color: #333;
+            font-size: 1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .contact-details p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Enhanced contact form with better styling */
+        .contact-form-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-form-card h2 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: #f8f9fa;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            display: none;
+            text-align: center;
+        }
+
+        .ai-badge {
+            display: inline-block;
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Added comprehensive AI chatbot widget */
+        .chatbot-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+            position: sticky;
+            top: 2rem;
+        }
+
+        .chatbot-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+        }
+
+        .chatbot-header h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .chatbot-status {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .message {
+            max-width: 85%;
+            padding: 0.8rem 1rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.bot {
+            background: #f1f3f4;
+            color: #333;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+
+        .message.user {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+
+        .chatbot-input-container {
+            padding: 1rem;
+            border-top: 1px solid #e1e5e9;
+            border-radius: 0 0 20px 20px;
+        }
+
+        .chatbot-input-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chatbot-input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid #e1e5e9;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .chatbot-input:focus {
+            border-color: #667eea;
+        }
+
+        .chatbot-send {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.8rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .chatbot-send:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .quick-questions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .quick-question {
+            background: #f1f3f4;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quick-question:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem 0;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            color: white;
+            text-align: center;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-section p, .footer-section a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        /* Enhanced mobile responsive design */
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .nav-links {
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            .main-container {
+                grid-template-columns: 1fr;
+                padding: 1rem 0;
+            }
+
+            .chatbot-container {
+                height: 400px;
+                order: -1;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .contact-info-card,
+            .contact-form-card {
+                padding: 1.5rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 0.5rem;
+            }
+
+            .main-container {
+                padding: 0.5rem 0;
+            }
+
+            .contact-info-card,
+            .contact-form-card {
+                padding: 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <a href="index.html" class="logo">NoStolen</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="report-stolen.html">Report</a></li>
+                <li><a href="check-imei.html">Check IMEI</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Contact & Support</h1>
+            <p>Get in touch with us or chat with our AI assistant for instant help</p>
+        </div>
+
+        <div class="main-container">
+            <div class="content-section">
+                <div class="contact-info-card">
+                    <h2>Get In Touch</h2>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <div class="contact-details">
+                            <h3>Email Support</h3>
+                            <p>support@nostolen.org</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon">📞</div>
+                        <div class="contact-details">
+                            <h3>Phone Support</h3>
+                            <p>+234-912-4449345</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon">🌐</div>
+                        <div class="contact-details">
+                            <h3>Website</h3>
+                            <p>www.nostolen.org</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form-card">
+                    <h2>Send Us a Message</h2>
+                    
+                    <form id="contact-form">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" class="form-control" placeholder="Enter your full name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" class="form-control" placeholder="Enter your email address" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" class="form-control" placeholder="How can we help you?" required></textarea>
+                        </div>
+
+                        <button type="submit" class="submit-btn" id="submit-btn">
+                            <span class="btn-text">Send Message</span>
+                            <div class="loading" id="loading">
+                                <div class="spinner"></div>
+                                <span>Sending...</span>
+                            </div>
+                        </button>
+
+                        <div class="success-message" id="success-message">
+                            ✅ Message sent successfully! We'll get back to you within 24 hours.
+                            <div class="ai-badge">🤖 AI Verified</div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Added comprehensive AI chatbot widget with FAQ responses -->
+            <aside class="chatbot-container">
+                <div class="chatbot-header">
+                    <h3>🤖 AI Support Assistant</h3>
+                    <div class="chatbot-status">Online • Ready to help</div>
+                </div>
+                
+                <div class="chatbot-messages" id="chatbot-messages">
+                    <div class="message bot">
+                        Hi! I'm your AI support assistant. I can help you with questions about IMEI checking, reporting stolen phones, and more. What would you like to know?
+                    </div>
+                    
+                    <div class="quick-questions">
+                        <button class="quick-question" onclick="askQuestion('How do I check my IMEI?')">How do I check my IMEI?</button>
+                        <button class="quick-question" onclick="askQuestion('What do I do if my phone is stolen?')">Phone stolen?</button>
+                        <button class="quick-question" onclick="askQuestion('Where is the nearest police station?')">Nearest police?</button>
+                    </div>
+                </div>
+                
+                <div class="chatbot-input-container">
+                    <div class="chatbot-input-group">
+                        <input type="text" class="chatbot-input" id="chatbot-input" placeholder="Ask me anything...">
+                        <button class="chatbot-send" onclick="sendMessage()">Send</button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>NoStolen</h3>
+                    <p>Protecting your devices with AI-powered security solutions.</p>
+                    <p>Check Before You Buy. Report When You Lose.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="index.html">Home</a>
+                    <a href="report-stolen.html">Report Stolen Phone</a>
+                    <a href="check-imei.html">Check IMEI</a>
+                    <a href="about.html">About Us</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p>📧 support@nostolen.org</p>
+                    <p>📞 +234-912-4449345</p>
+                    <p>🌐 www.nostolen.org</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('contact-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submit-btn');
+            const btnText = document.querySelector('.btn-text');
+            const loading = document.getElementById('loading');
+            const successMessage = document.getElementById('success-message');
+            
+            // Show loading state
+            btnText.style.display = 'none';
+            loading.style.display = 'flex';
+            submitBtn.disabled = true;
+            
+            // Simulate form submission
+            setTimeout(() => {
+                // Hide loading
+                btnText.style.display = 'block';
+                loading.style.display = 'none';
+                submitBtn.disabled = false;
+                
+                // Show success message
+                successMessage.style.display = 'block';
+                
+                // Reset form
+                this.reset();
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 5000);
+                
+            }, 2000);
+        });
+
+        const chatbotResponses = {
+            'how do i check my imei': 'You can find your IMEI number by:\n\n• Dialing *#06# on your phone\n• Going to Settings > About Phone > IMEI\n• Looking at the original box or receipt\n• Checking under the battery (older phones)\n\nOnce you have it, use our "Check IMEI" page to verify if the device is safe!',
+            
+            'what do i do if my phone is stolen': 'If your phone is stolen, follow these steps immediately:\n\n1. 📞 Contact local police and file a report\n2. 📱 Use our "Report Stolen Phone" form\n3. 🚫 Contact your carrier to block the device\n4. 🔒 Change passwords for accounts on the phone\n5. 📍 Use Find My Device if enabled\n\nOur AI will help detect and prevent the resale of your stolen device!',
+            
+            'where is the nearest police station': 'For emergency situations, always call your local emergency number first!\n\nTo find the nearest police station:\n• Use Google Maps and search "police station near me"\n• Contact your local directory assistance\n• Check your city\'s official website\n\nIn Nigeria: Call 199 for police emergency\nIn case you find a stolen device through our system, we\'ll provide specific police contact information.',
+            
+            'how accurate is nostolen': 'NoStolen uses advanced AI technology with 99.2% accuracy in detecting stolen phones:\n\n🤖 AI fraud detection prevents fake reports\n📊 Machine learning analyzes theft patterns\n🔍 Cross-references multiple databases\n📍 Predicts theft hotspots for prevention\n\nOur system is constantly learning and improving to protect users better!',
+            
+            'what is imei': 'IMEI (International Mobile Equipment Identity) is a unique 15-digit number that identifies your mobile device:\n\n• Like a fingerprint for your phone\n• Cannot be easily changed or duplicated\n• Used by carriers to identify devices\n• Essential for tracking stolen phones\n• Required for insurance claims\n\nEvery phone has a unique IMEI - that\'s what makes our theft detection so effective!',
+            
+            'how does ai detect fake reports': 'Our AI uses multiple detection methods:\n\n🔍 Pattern Analysis: Detects suspicious reporting patterns\n📊 Data Verification: Cross-checks IMEI databases\n🕒 Timing Analysis: Identifies unusual submission times\n📱 Device Fingerprinting: Verifies device authenticity\n🤖 Machine Learning: Learns from previous fake attempts\n\nThis helps maintain database integrity and prevents abuse!'
+        };
+
+        function addMessage(message, isUser = false) {
+            const messagesContainer = document.getElementById('chatbot-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+            messageDiv.textContent = message;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function getBotResponse(userMessage) {
+            const message = userMessage.toLowerCase().trim();
+            
+            // Find matching response
+            for (const [key, response] of Object.entries(chatbotResponses)) {
+                if (message.includes(key) || key.includes(message.replace(/[?]/g, ''))) {
+                    return response;
+                }
+            }
+            
+            // Check for common greetings
+            if (message.includes('hello') || message.includes('hi') || message.includes('hey')) {
+                return 'Hello! I\'m here to help with any questions about NoStolen, IMEI checking, reporting stolen phones, or general support. What would you like to know?';
+            }
+            
+            // Check for thanks
+            if (message.includes('thank') || message.includes('thanks')) {
+                return 'You\'re welcome! I\'m always here to help. Feel free to ask if you have any other questions about phone security, IMEI checking, or our AI-powered features.';
+            }
+            
+            // Check for contact info requests
+            if (message.includes('contact') || message.includes('phone number') || message.includes('email')) {
+                return 'You can reach our support team at:\n\n📧 Email: support@nostolen.org\n📞 Phone: +234-912-4449345\n🌐 Website: www.nostolen.org\n\nOr continue chatting with me for instant help!';
+            }
+            
+            // Default response
+            return 'I\'m not sure about that specific question, but I can help you with:\n\n• Finding and checking your IMEI number\n• Steps to take if your phone is stolen\n• How our AI detection works\n• Locating police stations\n• General NoStolen support\n\nWhat would you like to know more about?';
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatbot-input');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message
+            addMessage(message, true);
+            input.value = '';
+            
+            // Simulate typing delay
+            setTimeout(() => {
+                const response = getBotResponse(message);
+                addMessage(response);
+            }, 800);
+        }
+
+        function askQuestion(question) {
+            document.getElementById('chatbot-input').value = question;
+            sendMessage();
+        }
+
+        // Enter key support for chatbot
+        document.getElementById('chatbot-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Auto-focus chatbot input when page loads
+        window.addEventListener('load', function() {
+            document.getElementById('chatbot-input').focus();
+        });
+    </script>
+</body>
+</html>

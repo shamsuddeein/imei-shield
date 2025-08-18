@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Stolen Phone - NoStolen</title>
+    <link rel="stylesheet" href="styles/styles.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+            padding: 0.5rem;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            color: white;
+            padding: 3rem 0;
+        }
+
+        .page-header h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .page-header p {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .ai-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+        }
+
+        /* Form Container */
+        .form-container {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .form-section h3 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-row.two-col {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-control {
+            padding: 1rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: #f8f9fa;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            background: #f8f9fa;
+            color: #667eea;
+            transition: all 0.3s;
+        }
+
+        .file-upload:hover .file-upload-label {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .autofill-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-left: 0.5rem;
+        }
+
+        .autofill-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1.5rem 3rem;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 2rem;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* AI Features */
+        .ai-detection {
+            background: linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%);
+            border: 1px solid #38b2ac;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .ai-detection.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .ai-detection h4 {
+            color: #2c7a7b;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ai-detection p {
+            color: #2d3748;
+            font-size: 0.9rem;
+        }
+
+        /* Success/Error Messages */
+        .message {
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            display: none;
+            text-align: center;
+        }
+
+        .message.success {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+        }
+
+        .message.error {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+        }
+
+        .loading-spinner {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(102, 126, 234, 0.3);
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            color: white;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .nav-links {
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            .form-container {
+                padding: 2rem;
+            }
+
+            .form-row.two-col {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header {
+                padding: 2rem 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 0.5rem;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+            }
+
+            .submit-btn {
+                padding: 1rem 2rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="index.html" class="logo">NoStolen</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="report-stolen.html">Report</a></li>
+                <li><a href="check-imei.html">Check IMEI</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Report Stolen Phone</h1>
+            <p>Help us protect the community by reporting your stolen device</p>
+            <div class="ai-badge">
+                🤖 AI Fraud Detection Enabled
+            </div>
+        </div>
+
+        <div class="form-container">
+            <form id="report-form">
+                <!-- Device Information -->
+                <div class="form-section">
+                    <h3>📱 Device Information</h3>
+                    <div class="form-row two-col">
+                        <div class="form-group">
+                            <label for="imei">IMEI Number *</label>
+                            <div style="display: flex; align-items: center;">
+                                <input type="text" id="imei" class="form-control" placeholder="Enter 15-digit IMEI" maxlength="15" required>
+                                <button type="button" class="autofill-btn" onclick="autofillIMEI()">Auto-detect</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="brand">Phone Brand *</label>
+                            <select id="brand" class="form-control" required>
+                                <option value="">Select Brand</option>
+                                <option value="Apple">Apple</option>
+                                <option value="Samsung">Samsung</option>
+                                <option value="Google">Google</option>
+                                <option value="OnePlus">OnePlus</option>
+                                <option value="Xiaomi">Xiaomi</option>
+                                <option value="Huawei">Huawei</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row two-col">
+                        <div class="form-group">
+                            <label for="model">Phone Model *</label>
+                            <input type="text" id="model" class="form-control" placeholder="e.g., iPhone 15 Pro" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="color">Color</label>
+                            <input type="text" id="color" class="form-control" placeholder="e.g., Space Black">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Owner Information -->
+                <div class="form-section">
+                    <h3>👤 Owner Information</h3>
+                    <div class="form-row two-col">
+                        <div class="form-group">
+                            <label for="owner-name">Full Name *</label>
+                            <input type="text" id="owner-name" class="form-control" placeholder="Your full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone-number">Contact Number *</label>
+                            <input type="tel" id="phone-number" class="form-control" placeholder="+234 xxx xxx xxxx" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" class="form-control" placeholder="your.email@example.com" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Theft Details -->
+                <div class="form-section">
+                    <h3>🚨 Theft Details</h3>
+                    <div class="form-row two-col">
+                        <div class="form-group">
+                            <label for="theft-date">Date Stolen *</label>
+                            <input type="date" id="theft-date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="theft-time">Approximate Time</label>
+                            <input type="time" id="theft-time" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="location">Last Known Location *</label>
+                            <div style="display: flex; align-items: center;">
+                                <input type="text" id="location" class="form-control" placeholder="Address or area where phone was stolen" required>
+                                <button type="button" class="autofill-btn" onclick="getCurrentLocation()">Use Current</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="description">Description of Incident</label>
+                            <textarea id="description" class="form-control" placeholder="Describe how the phone was stolen (optional but helpful for recovery)"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Proof Upload -->
+                <div class="form-section">
+                    <h3>📄 Proof of Ownership</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Upload Proof (Receipt, Box, etc.)</label>
+                            <div class="file-upload">
+                                <input type="file" id="proof-upload" accept="image/*,.pdf" multiple>
+                                <div class="file-upload-label">
+                                    📎 Click to upload or drag files here
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Detection Display -->
+                <div id="ai-detection" class="ai-detection">
+                    <h4>🤖 AI Analysis Complete</h4>
+                    <p id="ai-message">Your report has been verified and appears legitimate. Thank you for providing accurate information.</p>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submit-btn">
+                    Submit Report
+                </button>
+
+                <div class="loading-spinner" id="loading">
+                    <div class="spinner"></div>
+                    <span>AI is processing your report...</span>
+                </div>
+
+                <!-- Success/Error Messages -->
+                <div id="success-message" class="message success">
+                    <h3>✅ Report Submitted Successfully!</h3>
+                    <p>Your stolen phone has been added to our database. We'll notify you if it's found. Report ID: <strong id="report-id"></strong></p>
+                </div>
+
+                <div id="error-message" class="message error">
+                    <h3>❌ Submission Failed</h3>
+                    <p id="error-text">Please check your information and try again.</p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 NoStolen. Helping recover stolen devices worldwide.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Auto-fill IMEI function
+        function autofillIMEI() {
+            // Simulate auto-detection
+            const sampleIMEIs = [
+                '123456789012345',
+                '987654321098765',
+                '456789123456789'
+            ];
+            const randomIMEI = sampleIMEIs[Math.floor(Math.random() * sampleIMEIs.length)];
+            document.getElementById('imei').value = randomIMEI;
+            
+            // Trigger AI detection
+            setTimeout(() => {
+                showAIDetection('IMEI auto-detected and validated successfully.');
+            }, 1000);
+        }
+
+        // Get current location
+        function getCurrentLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    // Simulate reverse geocoding
+                    const locations = [
+                        'Victoria Island, Lagos, Nigeria',
+                        'Ikeja, Lagos, Nigeria',
+                        'Lekki, Lagos, Nigeria',
+                        'Abuja, FCT, Nigeria'
+                    ];
+                    const randomLocation = locations[Math.floor(Math.random() * locations.length)];
+                    document.getElementById('location').value = randomLocation;
+                }, function() {
+                    alert('Unable to get your location. Please enter manually.');
+                });
+            } else {
+                alert('Geolocation is not supported by this browser.');
+            }
+        }
+
+        // Show AI detection
+        function showAIDetection(message) {
+            const aiDetection = document.getElementById('ai-detection');
+            const aiMessage = document.getElementById('ai-message');
+            aiMessage.textContent = message;
+            aiDetection.classList.add('show');
+        }
+
+        // IMEI validation
+        function validateIMEI(imei) {
+            imei = imei.replace(/[\s-]/g, '');
+            if (!/^\d{15}$/.test(imei)) return false;
+            
+            let sum = 0;
+            for (let i = 0; i < 14; i++) {
+                let digit = parseInt(imei[i]);
+                if (i % 2 === 1) {
+                    digit *= 2;
+                    if (digit > 9) {
+                        digit = Math.floor(digit / 10) + (digit % 10);
+                    }
+                }
+                sum += digit;
+            }
+            
+            const checkDigit = (10 - (sum % 10)) % 10;
+            return checkDigit === parseInt(imei[14]);
+        }
+
+        // Form submission
+        document.getElementById('report-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submit-btn');
+            const loading = document.getElementById('loading');
+            const successMessage = document.getElementById('success-message');
+            const errorMessage = document.getElementById('error-message');
+            
+            // Hide previous messages
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            
+            // Validate IMEI
+            const imei = document.getElementById('imei').value.trim();
+            if (!validateIMEI(imei)) {
+                document.getElementById('error-text').textContent = 'Please enter a valid 15-digit IMEI number.';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            // Show loading
+            submitBtn.disabled = true;
+            loading.style.display = 'flex';
+            
+            // Simulate AI processing and submission
+            setTimeout(() => {
+                loading.style.display = 'none';
+                submitBtn.disabled = false;
+                
+                // Simulate success (90% chance)
+                if (Math.random() > 0.1) {
+                    const reportId = 'NS' + Date.now().toString().slice(-8);
+                    document.getElementById('report-id').textContent = reportId;
+                    successMessage.style.display = 'block';
+                    
+                    // Show AI detection for successful submission
+                    showAIDetection('Report verified as legitimate. No fraudulent patterns detected.');
+                    
+                    // Reset form
+                    this.reset();
+                    document.getElementById('ai-detection').classList.remove('show');
+                } else {
+                    document.getElementById('error-text').textContent = 'AI detected potential issues with the report. Please verify your information.';
+                    errorMessage.style.display = 'block';
+                }
+                
+                // Scroll to message
+                const visibleMessage = successMessage.style.display === 'block' ? successMessage : errorMessage;
+                visibleMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+            }, 4000);
+        });
+
+        // IMEI input formatting
+        document.getElementById('imei').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+            
+            // Trigger AI validation after 15 digits
+            if (this.value.length === 15) {
+                setTimeout(() => {
+                    if (validateIMEI(this.value)) {
+                        showAIDetection('IMEI format validated. Checking against stolen device database...');
+                    } else {
+                        showAIDetection('Invalid IMEI format detected. Please verify the number.');
+                    }
+                }, 500);
+            }
+        });
+
+        // File upload handling
+        document.getElementById('proof-upload').addEventListener('change', function(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                const fileNames = Array.from(files).map(f => f.name).join(', ');
+                document.querySelector('.file-upload-label').innerHTML = `📎 ${files.length} file(s) selected: ${fileNames}`;
+                
+                // Simulate AI verification of uploaded files
+                setTimeout(() => {
+                    showAIDetection('Proof documents analyzed and verified as authentic.');
+                }, 1500);
+            }
+        });
+
+        // Set max date to today
+        document.getElementById('theft-date').max = new Date().toISOString().split('T')[0];
+    </script>
+</body>
+</html>

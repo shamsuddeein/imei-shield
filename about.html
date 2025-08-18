@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About NoStolen - AI-Powered Phone Security</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f7fafc;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+            padding: 0.5rem;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            opacity: 0.9;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 4rem 0;
+        }
+
+        .section {
+            background: white;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .section-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .section h2 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            color: #333;
+            margin: 0;
+        }
+
+        .section p {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin: 2rem 0;
+        }
+
+        .feature-list li {
+            padding: 1rem 0;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+            margin-top: 0.2rem;
+        }
+
+        .ai-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .ai-feature {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .ai-feature:hover {
+            transform: translateY(-3px);
+        }
+
+        .ai-feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            margin: 0 auto 1.5rem;
+        }
+
+        .ai-feature h3 {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .ai-feature p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%);
+            border-left: 4px solid #38b2ac;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .highlight-box h3 {
+            color: #2c7a7b;
+            margin-bottom: 1rem;
+        }
+
+        .highlight-box p {
+            color: #2d3748;
+            margin: 0;
+        }
+
+        /* Footer */
+        .footer {
+            background: #2d3748;
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .footer-links a:hover {
+            opacity: 0.8;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .nav-links {
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            .hero {
+                padding: 2rem 0;
+            }
+
+            .main-content {
+                padding: 2rem 0;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+
+            .section-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .ai-features {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 0.5rem;
+            }
+
+            .section {
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <a href="index.html" class="logo">NoStolen</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="report-stolen.html">Report</a></li>
+                <li><a href="check-imei.html">Check IMEI</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>About NoStolen</h1>
+            <p>Revolutionizing phone security with AI-powered theft prevention and recovery solutions</p>
+        </div>
+    </section>
+
+    <main class="main-content container">
+        <!-- Why No Accounts Section -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon">🔓</div>
+                <h2>Why No Accounts?</h2>
+            </div>
+            <p>At NoStolen, we believe in immediate action when it comes to phone theft. Creating accounts creates barriers that delay critical reporting and checking processes.</p>
+            
+            <ul class="feature-list">
+                <li>
+                    <div class="feature-icon">⚡</div>
+                    <div>
+                        <strong>Instant Access:</strong> Report stolen phones or check IMEI numbers immediately without registration delays
+                    </div>
+                </li>
+                <li>
+                    <div class="feature-icon">🛡️</div>
+                    <div>
+                        <strong>Privacy Protection:</strong> No personal data storage means your information stays private and secure
+                    </div>
+                </li>
+                <li>
+                    <div class="feature-icon">🌍</div>
+                    <div>
+                        <strong>Universal Access:</strong> Anyone can use our services regardless of location or device capabilities
+                    </div>
+                </li>
+                <li>
+                    <div class="feature-icon">🚀</div>
+                    <div>
+                        <strong>Reduced Friction:</strong> Emergency situations require immediate action, not form filling
+                    </div>
+                </li>
+            </ul>
+
+            <div class="highlight-box">
+                <h3>Emergency-First Design</h3>
+                <p>When your phone is stolen, every minute counts. Our account-free approach ensures you can report theft and check suspicious devices instantly, maximizing recovery chances and preventing fraud.</p>
+            </div>
+        </section>
+
+        <!-- IMEI Validation Section -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon">🔢</div>
+                <h2>IMEI Validation</h2>
+            </div>
+            <p>Every mobile device has a unique International Mobile Equipment Identity (IMEI) number - think of it as your phone's fingerprint. Our advanced validation system ensures accuracy and prevents fraud.</p>
+            
+            <ul class="feature-list">
+                <li>
+                    <div class="feature-icon">✓</div>
+                    <div>
+                        <strong>Luhn Algorithm Validation:</strong> Mathematical verification ensures IMEI numbers are structurally valid
+                    </div>
+                </li>
+                <li>
+                    <div class="feature-icon">🔍</div>
+                    <div>
+                        <strong>Format Verification:</strong> Automatic checking of 15-digit format and manufacturer codes
+                    </div>
+                </li>
+                <li>
+                    <div class="feature-icon">🌐</div>
+                    <div>
+                        <strong>Global Database Cross-Reference:</strong> Real-time checking against international stolen device databases
+                    </div>
+                </li>
+                <li>
+                    <div class="feature-icon">🤖</div>
+                    <div>
+                        <strong>AI Pattern Recognition:</strong> Machine learning detects suspicious IMEI patterns and potential fraud
+                    </div>
+                </li>
+            </ul>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">99.8%</div>
+                    <div class="stat-label">Validation Accuracy</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">&lt;2s</div>
+                    <div class="stat-label">Average Check Time</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">50M+</div>
+                    <div class="stat-label">IMEIs Verified</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Impact Section -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon">📈</div>
+                <h2>Our Impact</h2>
+            </div>
+            <p>NoStolen is making a real difference in the fight against phone theft, creating safer communities and protecting consumers worldwide.</p>
+            
+            <ul class="feature-list">
+                <li>
+                    <div class="feature-icon">🛡️</div>
+                    <div>
+                        <strong>Theft Prevention:</strong> Over 15,000 potential buyers warned away from stolen devices
+                    </div>
+                </li>
+                <li>
+                    <div class="feature-icon">🔄</div>
+                    <div>
+                        <strong>Device Recovery:</strong> 2,300+ stolen phones successfully returned to owners
+                    </div>
+                </li>
+                <li>
+                    <div class="feature-icon">👮</div>
+                    <div>
+                        <strong>Law Enforcement Support:</strong> Providing data insights to police in 12 major cities
+                    </div>
+                </li>
+                <li>
+                    <div class="feature-icon">💰</div>
+                    <div>
+                        <strong>Economic Impact:</strong> Prevented over $8.5M in stolen device transactions
+                    </div>
+                </li>
+                <li>
+                    <div class="feature-icon">🌍</div>
+                    <div>
+                        <strong>Global Reach:</strong> Active users in 45+ countries across 6 continents
+                    </div>
+                </li>
+            </ul>
+
+            <div class="highlight-box">
+                <h3>Community Safety</h3>
+                <p>By making it harder to sell stolen phones, we're reducing the incentive for theft, creating safer communities for everyone. Every IMEI check and report contributes to this collective security effort.</p>
+            </div>
+        </section>
+
+        <!-- AI Advantage Section -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon">🤖</div>
+                <h2>Our AI Advantage</h2>
+            </div>
+            <p>Advanced artificial intelligence powers every aspect of NoStolen, providing unprecedented accuracy and insights in phone security.</p>
+            
+            <div class="ai-features">
+                <div class="ai-feature">
+                    <div class="ai-feature-icon">🔍</div>
+                    <h3>Fraud Detection</h3>
+                    <p>Our AI analyzes reporting patterns, device specifications, and user behavior to identify suspicious or fake reports with 97.3% accuracy, protecting the integrity of our database.</p>
+                </div>
+                
+                <div class="ai-feature">
+                    <div class="ai-feature-icon">📍</div>
+                    <h3>Theft Hotspot Prediction</h3>
+                    <p>Machine learning algorithms analyze historical theft data, demographic patterns, and location intelligence to predict high-risk areas, helping law enforcement deploy resources effectively.</p>
+                </div>
+                
+                <div class="ai-feature">
+                    <div class="ai-feature-icon">💬</div>
+                    <h3>Intelligent Assistant</h3>
+                    <p>Our AI chatbot provides instant support, helping users find their IMEI, understand the reporting process, and navigate phone security best practices 24/7 in multiple languages.</p>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">97.3%</div>
+                    <div class="stat-label">Fraud Detection Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">85%</div>
+                    <div class="stat-label">Hotspot Prediction Accuracy</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">AI Assistant Availability</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">Languages Supported</div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3>Continuous Learning</h3>
+                <p>Our AI systems continuously learn from new data, improving accuracy and developing new capabilities. Every interaction makes NoStolen smarter and more effective at protecting users worldwide.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="report-stolen.html">Report Stolen Phone</a>
+                <a href="check-imei.html">Check IMEI</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <p>&copy; 2024 NoStolen. Making the world safer, one phone at a time.</p>
+        </div>
+    </footer>
+</body>
+</html>

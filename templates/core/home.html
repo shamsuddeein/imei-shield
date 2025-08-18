@@ -1,0 +1,70 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}NoStolen - Check Before You Buy{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-20">
+  <div class="container mx-auto text-center px-4">
+    <h1 class="text-4xl md:text-5xl font-bold mb-4">NoStolen</h1>
+    <p class="text-lg md:text-xl mb-6">Check Before You Buy. Report When You Lose.</p>
+    <div class="flex flex-col md:flex-row justify-center gap-4">
+      <a href="{% url 'core:report' %}" 
+         class="px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg shadow hover:bg-gray-100">
+        Report Stolen Phone
+      </a>
+      <a href="{% url 'core:check' %}" 
+         class="px-6 py-3 bg-white text-purple-600 font-semibold rounded-lg shadow hover:bg-gray-100">
+        Check IMEI
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-16 bg-gray-50">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">How It Works</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+      <div class="bg-white p-6 rounded-xl shadow-md text-center">
+        <h3 class="text-xl font-semibold text-blue-600 mb-2">1. Report</h3>
+        <p class="text-gray-600">
+          Victims can report stolen phones quickly without creating an account. 
+          Just enter IMEI, phone details, and proof of ownership.
+        </p>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow-md text-center">
+        <h3 class="text-xl font-semibold text-purple-600 mb-2">2. Verify</h3>
+        <p class="text-gray-600">
+          Buyers can instantly check a phone’s IMEI before purchase to confirm 
+          it’s not reported stolen.
+        </p>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow-md text-center">
+        <h3 class="text-xl font-semibold text-green-600 mb-2">3. Protect</h3>
+        <p class="text-gray-600">
+          Transparency protects buyers, supports law enforcement, and helps 
+          reduce stolen phone sales in the community.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Impact Section -->
+<section class="py-16">
+  <div class="container mx-auto px-4 text-center max-w-3xl">
+    <h2 class="text-3xl font-bold text-gray-800 mb-6">Why NoStolen Matters</h2>
+    <p class="text-lg text-gray-600">
+      By making stolen phones harder to resell, we reduce theft, protect buyers, 
+      and empower communities to stay safe. Together, we can make second-hand 
+      markets more trustworthy.
+    </p>
+  </div>
+</section>
+{% endblock %}

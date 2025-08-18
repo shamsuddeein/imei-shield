@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}NoStolen{% endblock %}</title>
+
+  <!-- Tailwind CSS (from CDN for now, later you can add it via npm if needed) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{% static 'core/css/styles.css' %}">
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+
+  <!-- Header / Navbar -->
+  <header class="bg-white shadow">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="{% url 'core:home' %}" class="text-2xl font-bold text-blue-600">
+        NoStolen
+      </a>
+      <nav class="space-x-6">
+        <a href="{% url 'core:home' %}" class="hover:text-blue-600">Home</a>
+        <a href="{% url 'core:about' %}" class="hover:text-blue-600">About</a>
+        <a href="{% url 'core:report' %}" class="hover:text-blue-600">Report</a>
+        <a href="{% url 'core:check' %}" class="hover:text-blue-600">Check</a>
+        <a href="{% url 'core:admin_dashboard' %}" class="hover:text-blue-600">Dashboard</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-grow">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t mt-10">
+    <div class="container mx-auto px-4 py-6 text-center text-gray-600 text-sm">
+      <p>&copy; {{ now|date:"Y" }} NoStolen. All rights reserved.</p>
+      <p class="mt-2">Check Before You Buy. Report When You Lose.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

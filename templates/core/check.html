@@ -1,0 +1,43 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Check IMEI - NoStolen{% endblock %}
+
+{% block content %}
+<div class="container mx-auto py-10">
+  <div class="max-w-xl mx-auto bg-white p-8 rounded-xl shadow-lg">
+    <h1 class="text-2xl font-bold text-gray-800 mb-6">Check a Phone Before Buying</h1>
+
+    <form method="post" class="space-y-5">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+
+      <div>
+        {{ form.imei.label_tag }}
+        {{ form.imei }}
+        {{ form.imei.errors }}
+      </div>
+
+      <button type="submit"
+        class="w-full py-3 text-white font-semibold rounded-lg shadow-md 
+               bg-gradient-to-r from-blue-600 to-purple-600 hover:opacity-90">
+        Check IMEI
+      </button>
+    </form>
+
+    {% if result == "safe" %}
+      <div class="mt-6 p-4 rounded-lg bg-green-100 text-green-800 font-medium">
+        ✅ Safe to Buy — This IMEI was not found in our database.
+      </div>
+    {% elif result == "stolen" %}
+      <div class="mt-6 p-4 rounded-lg bg-red-100 text-red-800 font-medium">
+        ⚠️ Reported Stolen — This phone has been flagged in our database.
+        <br>
+        <span class="block mt-2">Phone Model: {{ report.phone_model }}</span>
+        <span class="block">Owner: {{ report.owner_name }}</span>
+        <span class="block">Contact: {{ report.contact_info }}</span>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

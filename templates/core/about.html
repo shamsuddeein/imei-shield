@@ -1,0 +1,65 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}About - NoStolen{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-16">
+  <div class="container mx-auto text-center px-4">
+    <h1 class="text-4xl font-bold mb-4">About NoStolen</h1>
+    <p class="text-lg md:text-xl">Check Before You Buy. Report When You Lose.</p>
+  </div>
+</section>
+
+<!-- Why No Accounts -->
+<section class="py-16 bg-gray-50">
+  <div class="container mx-auto px-4 max-w-4xl">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">Why No Accounts?</h2>
+    <p class="text-gray-600 mb-4">
+      We believe in fast, frictionless use. Victims can report stolen devices and buyers 
+      can check phones instantly, without the barrier of creating an account.
+    </p>
+    <p class="text-gray-600">
+      This approach encourages more people to use the system while still ensuring 
+      integrity through IMEI validation and proof of ownership checks.
+    </p>
+  </div>
+</section>
+
+<!-- IMEI Validation -->
+<section class="py-16">
+  <div class="container mx-auto px-4 max-w-4xl">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">IMEI Validation</h2>
+    <p class="text-gray-600 mb-4">
+      Every phone has a unique 15-digit IMEI number. NoStolen automatically validates 
+      the IMEI format using the Luhn algorithm. Users are warned immediately if the 
+      input is incorrect, preventing errors.
+    </p>
+  </div>
+</section>
+
+<!-- Impact -->
+<section class="py-16 bg-gray-50">
+  <div class="container mx-auto px-4 max-w-4xl">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">Impact</h2>
+    <ul class="list-disc list-inside text-gray-600 space-y-2">
+      <li>Reduces the risk for second-hand phone buyers.</li>
+      <li>Deters phone theft by making stolen devices harder to resell.</li>
+      <li>Empowers communities to protect themselves and support law enforcement.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- AI Advantage -->
+<section class="py-16">
+  <div class="container mx-auto px-4 max-w-4xl text-center">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">AI Advantage (Future Feature)</h2>
+    <p class="text-gray-600">
+      In the future, NoStolen will use AI to detect fraud, analyze suspicious patterns, 
+      and provide smart alerts for authorities. This will help stop thieves from gaming 
+      the system and make the platform even more secure.
+    </p>
+  </div>
+</section>
+{% endblock %}

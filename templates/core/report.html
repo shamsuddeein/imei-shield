@@ -1,0 +1,67 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Report Stolen Phone - NoStolen{% endblock %}
+
+{% block content %}
+<div class="container mx-auto py-10">
+  <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-lg">
+    <h1 class="text-2xl font-bold text-gray-800 mb-6">Report a Stolen Phone</h1>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" class="space-y-5">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+
+      <div>
+        {{ form.imei.label_tag }}  
+        {{ form.imei }}
+        {{ form.imei.errors }}
+      </div>
+
+      <div>
+        {{ form.owner_name.label_tag }}
+        {{ form.owner_name }}
+        {{ form.owner_name.errors }}
+      </div>
+
+      <div>
+        {{ form.phone_model.label_tag }}
+        {{ form.phone_model }}
+        {{ form.phone_model.errors }}
+      </div>
+
+      <div>
+        {{ form.last_seen_location.label_tag }}
+        {{ form.last_seen_location }}
+        {{ form.last_seen_location.errors }}
+      </div>
+
+      <div>
+        {{ form.contact_info.label_tag }}
+        {{ form.contact_info }}
+        {{ form.contact_info.errors }}
+      </div>
+
+      <div>
+        {{ form.proof_of_ownership.label_tag }}
+        {{ form.proof_of_ownership }}
+        {{ form.proof_of_ownership.errors }}
+      </div>
+
+      <button type="submit"
+        class="w-full py-3 text-white font-semibold rounded-lg shadow-md 
+               bg-gradient-to-r from-blue-600 to-purple-600 hover:opacity-90">
+        Submit Report
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

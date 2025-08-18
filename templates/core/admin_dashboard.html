@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - NoStolen</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            line-height: 1.6;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar.collapsed {
+            transform: translateX(-200px);
+        }
+
+        .sidebar-header {
+            padding: 2rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .sidebar-nav {
+            padding: 1rem 0;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 1rem 1.5rem;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: rgba(255, 255, 255, 0.1);
+            border-left-color: white;
+        }
+
+        .nav-item i {
+            margin-right: 0.5rem;
+            width: 20px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-content.expanded {
+            margin-left: 50px;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #667eea;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 1.8rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-bell {
+            position: relative;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #667eea;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Dashboard Content */
+        .dashboard-content {
+            padding: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .stat-icon.reports {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .stat-icon.verified {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+        }
+
+        .stat-icon.flagged {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+
+        .stat-icon.recovered {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+        }
+
+        .stat-info h3 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 0.2rem;
+        }
+
+        .stat-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Content Sections */
+        .content-section {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .section-header h2 {
+            color: #333;
+            font-size: 1.3rem;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            min-width: 200px;
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .reports-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .reports-table th,
+        .reports-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .reports-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+            white-space: nowrap;
+        }
+
+        .reports-table td {
+            color: #666;
+        }
+
+        .reports-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-verified {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-flagged {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .ai-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+        }
+
+        /* Notifications Panel */
+        .notifications-list {
+            padding: 1rem 2rem;
+        }
+
+        .notification-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            background: #f8f9fa;
+            transition: all 0.3s;
+        }
+
+        .notification-item:hover {
+            background: #e9ecef;
+        }
+
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .notification-icon.ai {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .notification-icon.alert {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-content h4 {
+            color: #333;
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+        }
+
+        .notification-content p {
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        .notification-time {
+            color: #999;
+            font-size: 0.7rem;
+        }
+
+        /* AI Insights */
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .insight-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .insight-card h3 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .chart-placeholder {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .insight-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 1rem;
+        }
+
+        .insight-stat {
+            text-align: center;
+        }
+
+        .insight-stat h4 {
+            color: #667eea;
+            font-size: 1.5rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .insight-stat p {
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .header {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 1.3rem;
+            }
+
+            .dashboard-content {
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-header {
+                padding: 1rem;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .search-input {
+                flex: 1;
+                min-width: auto;
+            }
+
+            .reports-table {
+                font-size: 0.8rem;
+            }
+
+            .reports-table th,
+            .reports-table td {
+                padding: 0.5rem;
+            }
+
+            .insights-grid {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stat-card {
+                padding: 1rem;
+            }
+
+            .stat-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .stat-info h3 {
+                font-size: 1.5rem;
+            }
+        }
+
+
+        .pagination {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              margin: 1.5rem 0;
+              gap: 1rem;
+              font-size: 0.9rem;
+          }
+
+          .page-btn {
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              color: white;
+              padding: 0.4rem 0.8rem;
+              border-radius: 8px;
+              text-decoration: none;
+              transition: 0.3s;
+          }
+
+          .page-btn:hover {
+              background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+          }
+
+          .page-info {
+              color: #555;
+              font-weight: 500;
+          }
+
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>NoStolen Admin</h2>
+        </div>
+        <div class="sidebar-nav">
+            <a href="#dashboard" class="nav-item active" onclick="showSection('dashboard')">
+                <i>📊</i> Dashboard
+            </a>
+            <a href="#reports" class="nav-item" onclick="showSection('reports')">
+                <i>📱</i> Reports
+            </a>
+            <a href="#insights" class="nav-item" onclick="showSection('insights')">
+                <i>🤖</i> AI Insights
+            </a>
+            <a href="#settings" class="nav-item" onclick="showSection('settings')">
+                <i>⚙️</i> Settings
+            </a>
+            <a href="#logout" class="nav-item">
+                <i>🚪</i> Logout
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content" id="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+                <h1>Dashboard</h1>
+            </div>
+            <div class="header-right">
+                <button class="notification-bell" onclick="toggleNotifications()">
+                    🔔
+                    <span class="notification-badge">3</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+          
+          <!-- Stats Grid -->
+        <div class="stats-grid">
+
+            <!-- Global Totals -->
+            <div class="stat-card">
+                <div class="stat-icon reports">📱</div>
+                <div class="stat-info">
+                    <h3>{{ global_total }}</h3>
+                    <p>Total Reports (All)</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon verified">✅</div>
+                <div class="stat-info">
+                    <h3>{{ global_verified }}</h3>
+                    <p>AI Verified (All)</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon flagged">⚠️</div>
+                <div class="stat-info">
+                    <h3>{{ global_flagged }}</h3>
+                    <p>AI Flagged (All)</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon recovered">🔄</div>
+                <div class="stat-info">
+                    <h3>{{ global_recovered }}</h3>
+                    <p>Recovered (All)</p>
+                </div>
+            </div>
+
+            <!-- Filtered Totals -->
+            <div class="stat-card">
+                <div class="stat-icon reports">📊</div>
+                <div class="stat-info">
+                    <h3>{{ filtered_total }}</h3>
+                    <p>Filtered Reports</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon verified">🔍</div>
+                <div class="stat-info">
+                    <h3>{{ filtered_verified }}</h3>
+                    <p>Verified (Filtered)</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon flagged">🚨</div>
+                <div class="stat-info">
+                    <h3>{{ filtered_flagged }}</h3>
+                    <p>Flagged (Filtered)</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon recovered">📦</div>
+                <div class="stat-info">
+                    <h3>{{ filtered_recovered }}</h3>
+                    <p>Recovered (Filtered)</p>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+
+          
+            <!-- Notifications Panel -->
+            <div class="content-section" id="notifications-panel" style="display: none;">
+                <div class="section-header">
+                    <h2>🔔 Recent Notifications</h2>
+                </div>
+                <div class="notifications-list">
+                    <div class="notification-item">
+                        <div class="notification-icon ai">🤖</div>
+                        <div class="notification-content">
+                            <h4>New AI-flagged report received</h4>
+                            <p>IMEI: 123456789012345 - Suspicious patterns detected</p>
+                        </div>
+                        <div class="notification-time">2 min ago</div>
+                    </div>
+                    <div class="notification-item">
+                        <div class="notification-icon alert">⚠️</div>
+                        <div class="notification-content">
+                            <h4>Fraud detection alert</h4>
+                            <p>Multiple reports from same IP address detected</p>
+                        </div>
+                        <div class="notification-time">15 min ago</div>
+                    </div>
+                    <div class="notification-item">
+                        <div class="notification-icon ai">🤖</div>
+                        <div class="notification-content">
+                            <h4>AI model updated</h4>
+                            <p>Fraud detection accuracy improved to 97.8%</p>
+                        </div>
+                        <div class="notification-time">1 hour ago</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports Section -->
+            <div class="content-section" id="reports-section">
+                <div class="section-header">
+                    <h2>📱 Stolen Phone Reports</h2>
+                    <div class="search-box">
+                      <form method="get" action="{% url 'core:admin_dashboard' %}" style="display: flex; gap: 0.5rem;">
+                          <input type="text" 
+                                name="q" 
+                                value="{{ request.GET.q }}" 
+                                class="search-input" 
+                                placeholder="Search by IMEI, Owner, or Model...">
+                          <button type="submit" class="search-btn">Search</button>
+                      </form>
+                    </div>
+
+                </div>
+                <div class="table-container">
+                    <table class="reports-table">
+                        <thead>
+                            <tr>
+                                <th>IMEI</th>
+                                <th>Owner Name</th>
+                                <th>Phone Model</th>
+                                <th>Last Seen Location</th>
+                                <th>Contact Info</th>
+                                <th>Proof Link</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reports-tbody">
+                            {% for r in reports %}
+                            <tr>
+                                <td>{{ r.imei }}</td>
+                                <td>{{ r.owner_name }}</td>
+                                <td>{{ r.phone_model }}</td>
+                                <td>{{ r.last_seen_location }}</td>
+                                <td>{{ r.contact_info }}</td>
+                                <td>
+                                  {% if r.proof_of_ownership %}
+                                    <a href="{{ r.proof_of_ownership.url }}" style="color: #667eea;" target="_blank">View Proof</a>
+                                  {% else %}
+                                    <span style="color:#999;">No file</span>
+                                  {% endif %}
+                                </td>
+                                <td>
+                                  {% if r.status == "verified" %}
+                                    <span class="status-badge status-verified">Verified</span>
+                                    <span class="ai-badge">AI ✓</span>
+                                  {% elif r.status == "flagged" %}
+                                    <span class="status-badge status-flagged">Flagged</span>
+                                    <span class="ai-badge">AI ⚠️</span>
+                                  {% else %}
+                                    <span class="status-badge status-pending">Pending</span>
+                                    <span class="ai-badge">AI 🔄</span>
+                                  {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7" class="text-center text-gray-500 py-4">No reports found.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+
+
+                    <div class="pagination">
+                      {% if reports.has_previous %}
+                          <a href="?q={{ q }}&page={{ reports.previous_page_number }}" class="page-btn">« Prev</a>
+                      {% endif %}
+
+                      <span class="page-info">
+                          Page {{ reports.number }} of {{ reports.paginator.num_pages }}
+                      </span>
+
+                      {% if reports.has_next %}
+                          <a href="?q={{ q }}&page={{ reports.next_page_number }}" class="page-btn">Next »</a>
+                      {% endif %}
+                  </div>
+
+                </div>
+            </div>
+
+            <!-- AI Insights Section -->
+            <div class="content-section" id="insights-section" style="display: none;">
+                <div class="section-header">
+                    <h2>🤖 AI Insights & Analytics</h2>
+                </div>
+                <div class="insights-grid">
+                    <div class="insight-card">
+                        <h3>📍 Theft Hotspot Map</h3>
+                        <div class="chart-placeholder">
+                            Interactive Map Visualization
+                            <br>
+                            <small>Showing theft density by location</small>
+                        </div>
+                        <div class="insight-stats">
+                            <div class="insight-stat">
+                                <h4>Lagos</h4>
+                                <p>Highest Risk</p>
+                            </div>
+                            <div class="insight-stat">
+                                <h4>Abuja</h4>
+                                <p>Medium Risk</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="insight-card">
+                        <h3>🔮 AI Predictions</h3>
+                        <div class="chart-placeholder">
+                            Predictive Analytics Chart
+                            <br>
+                            <small>Likely theft areas next 30 days</small>
+                        </div>
+                        <div class="insight-stats">
+                            <div class="insight-stat">
+                                <h4>85%</h4>
+                                <p>Accuracy Rate</p>
+                            </div>
+                            <div class="insight-stat">
+                                <h4>12</h4>
+                                <p>High-Risk Areas</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="insight-card">
+                        <h3>⚠️ Fraud Detection</h3>
+                        <div class="chart-placeholder">
+                            Fraud Analysis Dashboard
+                            <br>
+                            <small>Real-time fraud detection results</small>
+                        </div>
+                        <div class="insight-stats">
+                            <div class="insight-stat">
+                                <h4>97.8%</h4>
+                                <p>Detection Rate</p>
+                            </div>
+                            <div class="insight-stat">
+                                <h4>23</h4>
+                                <p>Flagged Today</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Fraud Alerts -->
+                <div style="padding: 0 2rem 2rem;">
+                    <h3 style="color: #333; margin-bottom: 1rem;">🚨 Recent Fraud Alerts</h3>
+                    <div class="notification-item" style="background: #fff3cd; border-left: 4px solid #ffc107;">
+                        <div class="notification-icon alert">⚠️</div>
+                        <div class="notification-content">
+                            <h4>Suspicious Report Pattern Detected</h4>
+                            <p>IMEI: 987654321098765 - This report may be fake based on AI analysis of submission patterns and device information inconsistencies.</p>
+                        </div>
+                        <div class="notification-time">Active</div>
+                    </div>
+                    <div class="notification-item" style="background: #f8d7da; border-left: 4px solid #dc3545;">
+                        <div class="notification-icon alert">🚫</div>
+                        <div class="notification-content">
+                            <h4>Multiple Reports from Same IP</h4>
+                            <p>IP: 192.168.1.100 - 5 reports submitted in last hour. Potential spam or fraud attempt detected.</p>
+                        </div>
+                        <div class="notification-time">High Priority</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data for reports
+        /*
+        const reportsData = [
+            {
+                imei: '123456789012345',
+                owner: 'John Doe',
+                model: 'iPhone 15 Pro',
+                location: 'Victoria Island, Lagos',
+                contact: '+234-801-234-5678',
+                status: 'verified'
+            },
+            {
+                imei: '987654321098765',
+                owner: 'Jane Smith',
+                model: 'Samsung Galaxy S24',
+                location: 'Ikeja, Lagos',
+                contact: '+234-802-345-6789',
+                status: 'flagged'
+            },
+            {
+                imei: '456789123456789',
+                owner: 'Mike Johnson',
+                model: 'Google Pixel 8',
+                location: 'Lekki, Lagos',
+                contact: '+234-803-456-7890',
+                status: 'pending'
+            },
+            {
+                imei: '789123456789012',
+                owner: 'Sarah Wilson',
+                model: 'OnePlus 12',
+                location: 'Abuja, FCT',
+                contact: '+234-804-567-8901',
+                status: 'verified'
+            },
+            {
+                imei: '321654987321654',
+                owner: 'David Brown',
+                model: 'Xiaomi 14 Pro',
+                location: 'Port Harcourt, Rivers',
+                contact: '+234-805-678-9012',
+                status: 'verified'
+            }
+        ];
+        */
+        // Toggle sidebar
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+            
+            if (window.innerWidth <= 768) {
+                sidebar.classList.toggle('open');
+            } else {
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
+            }
+        }
+
+        // Toggle notifications
+        function toggleNotifications() {
+            const panel = document.getElementById('notifications-panel');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Show different sections
+        function showSection(section) {
+            // Update active nav item
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Update header title
+            const headerTitle = document.querySelector('.header h1');
+            
+            // Hide all sections
+            document.getElementById('reports-section').style.display = 'block';
+            document.getElementById('insights-section').style.display = 'none';
+            document.getElementById('notifications-panel').style.display = 'none';
+
+            switch(section) {
+                case 'dashboard':
+                    headerTitle.textContent = 'Dashboard';
+                    document.getElementById('reports-section').style.display = 'block';
+                    break;
+                case 'reports':
+                    headerTitle.textContent = 'Reports Management';
+                    document.getElementById('reports-section').style.display = 'block';
+                    break;
+                case 'insights':
+                    headerTitle.textContent = 'AI Insights';
+                    document.getElementById('insights-section').style.display = 'block';
+                    document.getElementById('reports-section').style.display = 'none';
+                    break;
+                case 'settings':
+                    headerTitle.textContent = 'Settings';
+                    document.getElementById('reports-section').style.display = 'none';
+                    break;
+            }
+        }
+
+        // Search reports
+        /*
+        function searchReports() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const tbody = document.getElementById('reports-tbody');
+            
+            if (!searchTerm) {
+                // Show all reports
+                renderReports(reportsData);
+                return;
+            }
+
+            const filteredReports = reportsData.filter(report => 
+                report.imei.toLowerCase().includes(searchTerm) ||
+                report.owner.toLowerCase().includes(searchTerm) ||
+                report.model.toLowerCase().includes(searchTerm)
+            );
+
+            renderReports(filteredReports);
+        }
+        */
+
+        // Render reports table
+        function renderReports(reports) {
+            const tbody = document.getElementById('reports-tbody');
+            tbody.innerHTML = '';
+
+            reports.forEach(report => {
+                const row = document.createElement('tr');
+                
+                let statusClass = 'status-pending';
+                let statusText = 'Pending';
+                let aiIcon = '🔄';
+                
+                if (report.status === 'verified') {
+                    statusClass = 'status-verified';
+                    statusText = 'Verified';
+                    aiIcon = '✓';
+                } else if (report.status === 'flagged') {
+                    statusClass = 'status-flagged';
+                    statusText = 'Flagged';
+                    aiIcon = '⚠️';
+                }
+
+                row.innerHTML = `
+                    <td>${report.imei}</td>
+                    <td>${report.owner}</td>
+                    <td>${report.model}</td>
+                    <td>${report.location}</td>
+                    <td>${report.contact}</td>
+                    <td><a href="#" style="color: #667eea;">View Proof</a></td>
+                    <td>
+                        <span class="status-badge ${statusClass}">${statusText}</span>
+                        <span class="ai-badge">AI ${aiIcon}</span>
+                    </td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+        }
+
+        // Search on Enter key
+        document.getElementById('search-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchReports();
+            }
+        });
+
+        // Handle mobile sidebar
+        window.addEventListener('resize', function() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+            
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('open');
+                if (sidebar.classList.contains('collapsed')) {
+                    mainContent.classList.add('expanded');
+                } else {
+                    mainContent.classList.remove('expanded');
+                }
+            } else {
+                sidebar.classList.remove('collapsed');
+                mainContent.classList.remove('expanded');
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            renderReports(reportsData);
+        });
+    </script>
+</body>
+</html>
