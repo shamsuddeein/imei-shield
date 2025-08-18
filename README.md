@@ -34,7 +34,7 @@ By making stolen phones harder to resell, IMEI Shield reduces theft incentives, 
 - 🔜 Integration with telecom providers  
 
 ## 🔗 Links
-- Linkdin: https://www.linkedin.com/in/shamsuddeein/
+- Linkdin: *[shamsuddeein](https://www.linkedin.com/in/shamsuddeein)*
 - Twitter: *[shamsuddeein](https://x.com/shamsuddeein)*  
 
 ---
