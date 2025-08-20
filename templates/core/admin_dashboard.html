@@ -551,7 +551,7 @@
             <a href="#settings" class="nav-item" onclick="showSection('settings')">
                 <i>⚙️</i> Settings
             </a>
-            <a href="#logout" class="nav-item">
+            <a href="{% url 'core:logout' %}" class="nav-item">
                 <i>🚪</i> Logout
             </a>
         </div>
@@ -691,7 +691,7 @@
                 <div class="section-header">
                     <h2>📱 Stolen Phone Reports</h2>
                     <div class="search-box">
-                      <form method="get" action="{% url 'core:admin_dashboard' %}" style="display: flex; gap: 0.5rem;">
+                      <form method="get" action="{% url 'core:dashboard' %}" style="display: flex; gap: 0.5rem;">
                           <input type="text" 
                                 name="q" 
                                 value="{{ request.GET.q }}" 

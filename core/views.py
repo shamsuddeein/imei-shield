@@ -5,6 +5,9 @@ from .models import Report, ImeiCheckLog
 from django.db.models import Count
 from django.db.models import Q
 from django.core.paginator import Paginator
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
 
 
@@ -73,6 +76,7 @@ def about(request):
 
 
 
+@login_required(login_url='/login/')
 def admin_dashboard(request):
     q = request.GET.get("q", "").strip()
 
@@ -116,3 +120,24 @@ def admin_dashboard(request):
         "q": q,
     }
     return render(request, "core/admin_dashboard.html", context)
+
+
+
+
+def admin_login(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None and user.is_staff:  # allow only admin
+            login(request, user)
+            return redirect("core:dashboard")  # send to dashboard
+        else:
+            return render(request, "login.html", {"error": "Invalid credentials"})
+    return render(request, "login.html")
+
+
+def custom_logout(request):
+    logout(request)
+    return redirect("core:home")
