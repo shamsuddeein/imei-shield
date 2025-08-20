@@ -1,29 +1,38 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Python compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyc
 
-# dependencies
-/node_modules
+# Django stuff
+*.log
+*.pot
+*.py[cod]
+*.sqlite3
+db.sqlite3
+local_settings.py
+media/
+staticfiles/
 
-# next.js
-/.next/
-/out/
+# Virtual environment
+venv/
+.no-stolen-Wo2W23Um/  # your specific virtualenv folder
+Pipfile.lock  # optional: ignore if secrets inside
 
-# production
-/build
+# Environment variables
+.env
+*.env
 
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
+# OS files
+.DS_Store
+Thumbs.db
 
-# env files
-.env*
+# IDE / Editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
 
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
-
-.vscode
+# Node / frontend files (if you ever add)
+node_modules/
